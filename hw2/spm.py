@@ -1,20 +1,18 @@
-from utils import load_cifar10_data
+from utils import load_mnist
 from utils import extract_DenseSift_descriptors
 from utils import build_codebook
 from utils import input_vector_encoder
 from classifier import svm_classifier
+import argparse
 
 import numpy as np
 
 parser = argparse.ArgumentParser(description='Image loader')
-parser.add_argument("--train", type=str, help='load training data')
-parser.add_argument("--test", type=str, help='load test data (optional)')
 parser.add_argument("--voc_size", type=int, help='VOC size', default=100)
 parser.add_argument("--pyramid_level", type=int, help='Pyramid levels', default=1)
 parser.add_argument("--dsift_step_size", type=int, help='Dense SIFT step size', default=4)
 args = parser.parse_args()
-print "Training data load from {}".format(args.train)
-print "Test data load from {}".format(args.test)
+
 
 
 def build_spatial_pyramid(image, descriptor, level):
@@ -77,8 +75,8 @@ DSIFT_STEP_SIZE = args.dsift_step_size
 
 if __name__ == '__main__':
 
-    x_train, y_train = load_my_data(dataset=args.train)
-    x_test, y_test = load_my_data(dataset=args.test)
+    x_train, y_train = load_mnist('training')
+    x_test, y_test = load_mnist('testing')
 
     print "Dense SIFT feature extraction"
     x_train_feature = [extract_DenseSift_descriptors(img) for img in x_train]
