@@ -13,11 +13,17 @@ def get_label(path='./cifar10/train/labels.txt'):
     return names
 
 
-
+def svm_best_classifier(x_train, y_train, x_test=None, y_test=None):
+    clf = svm.SVC(C=10.0, gamma=1.0, cache_size=20000, kernel='rbf', tol=0.001, 
+		decision_function_shape='ovr', verbose=False, shrinking=True, max_iter=-1)
+    clf.fit(x_train, y_train)
+    y_true, y_pred = y_test, clf.predict(x_test)
+    print(classification_report(y_true, y_pred))
+	
 def svm_classifier(x_train, y_train, x_test=None, y_test=None):
-    if x_test == None and y_test == None:
+    if len(x_test)==0 and len(y_test)==0:
         x_train, x_test, y_train, y_test = train_test_split(
-                x_train, y_train, test_size=0.2, random_state=6)
+                x_train, y_train, test_size=1, random_state=6)
         print "Spliting train:{}/test:{} from training data".format(
                 len(x_train), len(x_test))
     C_range = 10.0 ** np.arange(-3, 3)

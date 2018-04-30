@@ -2,7 +2,7 @@ from utils import load_mnist
 from utils import extract_DenseSift_descriptors
 from utils import build_codebook
 from utils import input_vector_encoder
-from classifier import svm_classifier
+from classifier import svm_classifier, svm_best_classifier
 import argparse
 
 import numpy as np
@@ -108,4 +108,4 @@ if __name__ == '__main__':
     x_train = np.asarray(x_train)
     x_test = np.asarray(x_test)
 
-    svm_classifier(x_train, y_train, x_test, y_test)
+    svm_best_classifier(x_train, y_train, x_test, y_test)

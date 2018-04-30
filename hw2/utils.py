@@ -5,7 +5,7 @@ import scipy.cluster.vq as vq
 import numpy as np
 import os
 import struct
-
+import random
 
 DSIFT_STEP_SIZE = 4
 
@@ -14,7 +14,7 @@ Loosely inspired by http://abel.ee.ucla.edu/cvxopt/_downloads/mnist.py
 which is GPL licensed.
 """
 
-def load_mnist(dataset = "training", path = "./data/raw"):
+def load_mnist(dataset = "training", p_sample=0.6, path = "./data/raw"):
     """
     Python function for importing the MNIST data set.  It returns an iterator
     of 2-tuples with the first element being the label and the second element
@@ -39,7 +39,10 @@ def load_mnist(dataset = "training", path = "./data/raw"):
         magic, num, rows, cols = struct.unpack(">IIII", fimg.read(16))
         img = np.fromfile(fimg, dtype=np.uint8).reshape(len(lbl), rows, cols)
 
-    return img.astype(np.uint8), lbl.astype(np.uint8)
+    n = img.shape[0]
+    n_sample = int(p_sample*n)
+    sample_idx = random.sample(xrange(n), n_sample)
+    return img[sample_idx].astype(np.uint8), lbl[sample_idx].astype(np.uint8)
 
 def load_cifar10_data(dataset):
     if dataset == 'train':
